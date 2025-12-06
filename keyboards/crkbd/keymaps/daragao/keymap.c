@@ -15,13 +15,35 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#define SPLIT_WPM_ENABLE true
-#define ANIM_INVERT true
+// #define SPLIT_WPM_ENABLE true
+// #define ANIM_INVERT true
 
 #include QMK_KEYBOARD_H
+/**
+* Put this somewhere at the beginning of the file --
+* Make sure you import only one of animations at a time
+* They all have same function exported, so it won't compile if you
+* include more than one at a time. You can also configure some options
+* before including the animation. Not all animations support them, but some do :P.
+*/
+#define ANIM_INVERT false
+#define ANIM_RENDER_WPM true
+#define FAST_TYPE_WPM 45 //Switch to fast animation when over words per minute
 
 #ifdef OLED_ENABLE
 #include "demon.c"
+#endif
+
+// -- Probably some other stuff and then --
+
+
+#ifdef OLED_ENABLE
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+  if (!is_keyboard_master()) {
+    return OLED_ROTATION_180;
+  }
+  return rotation;
+}
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -77,13 +99,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 #ifdef OLED_ENABLE
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master()) {
-    return OLED_ROTATION_180;
-  }
-  return rotation;
-}
-
 bool oled_task_user(void) {
   if (!is_keyboard_master()) {
     oled_render_anim();
