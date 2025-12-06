@@ -31,7 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define FAST_TYPE_WPM 45 //Switch to fast animation when over words per minute
 
 #ifdef OLED_ENABLE
-#include "demon.c"
+#include "animation-utils.h" // <-- Include the header first
+#include "demon.c"         // <-- Then include the animation C file
 #endif
 
 // -- Probably some other stuff and then --

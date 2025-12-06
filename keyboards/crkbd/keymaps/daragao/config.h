@@ -20,9 +20,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#define ANIM_FRAME_WIDTH 106
+#define ANIM_SCROLL false
+
 //#define USE_MATRIX_I2C
 
 /* Select hand configuration */
+/* OLED configuration */
+#define OLED_DISPLAY_ADDRESS 0x3C
+#define OLED_DRIVER_TYPE OLED_DRIVER_SSH1106
+
+/* Split Keyboard Configuration */
+#define SPLIT_TRANSPORT_MIRROR
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_OLED_ENABLE
 
 #define MASTER_LEFT
 // #define MASTER_RIGHT

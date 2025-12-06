@@ -1,54 +1,28 @@
-/**
- * Utilities for QMK oled animations
- *
- * Copyright (c) Marek Piechut
- * MIT License
- */
-#pragma once
+#include QMK_KEYBOARD_H // Includes core QMK definitions
+#include <qmk.h> // <-- Use the universal QMK header
+#include "animation-utils.h" // Your custom header
+#include <quantum.h>
 
-//-------- CONFIGURATION START --------
-
-#ifndef ANIM_RENDER_WPM
-  #define ANIM_RENDER_WPM true
-#endif
-#ifndef FAST_TYPE_WPM
-  #define FAST_TYPE_WPM 45 //Switch to fast animation when over words per minute
-#endif
-#ifndef ANIM_INVERT
-  #define ANIM_INVERT false //Invert animation color and background
-#endif
-#ifndef ANIM_BG
-  #define ANIM_BG 0x00
-#endif
-#ifndef ANIM_FRAME_TIME
-  #define ANIM_FRAME_TIME 250
-#endif
-//-------- CONFIGURATION END--------
-
-#define ANIM_WPM_WIDTH 22
-#define OLED_ROWS OLED_DISPLAY_HEIGHT / 4
+// ... rest of the file ...
 
 static void oled_render_wpm(void) {
-  //static char wpm_str[4];
-
-  //sprintf(wpm_str, "%03d", get_current_wpm());
+  // We need to use `oled_write_P` with `get_u8_str` if WPM rendering is complex,
+  // but for simplicity, we use the core functions.
 
   oled_set_cursor(0, 1);
   oled_write_P(PSTR("WPM"), false);
   oled_set_cursor(0, 2);
   oled_write(get_u8_str(get_current_wpm(), '0'), false);
-  //oled_write(wpm_str, false);
 }
 
-static void oled_render_anim_frame(const char **fast_frames, const char **slow_frames, uint8_t frames_len) {
-
+void oled_render_anim_frame(const char **fast_frames, const char **slow_frames, uint8_t frames_len) {
+  // ALL THE CODE FOR THE FUNCTION GOES HERE:
   static uint32_t anim_timer = 0;
   static uint8_t current_frame = 0;
   static int16_t frame_offset = ANIM_RENDER_WPM ? ANIM_WPM_WIDTH : 0;
-  static int8_t step = 8;
+  static QMK_UNUSED int8_t step = 8;
 
   const uint8_t speed = get_current_wpm();
-
 
   if (timer_elapsed32(anim_timer) > ANIM_FRAME_TIME && speed > 0) {
     oled_set_cursor(0, 0);
